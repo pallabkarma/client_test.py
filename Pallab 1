@@ -1,0 +1,31 @@
+# client_test.py
+
+import unittest
+from client import getDataPoint, getRatio
+
+class TestClientMethods(unittest.TestCase):
+
+    def test_getDataPoint(self):
+        quotes = [
+            {'stock': 'ABC', 'top_bid': {'price': 120.0}, 'top_ask': {'price': 121.0}},
+            {'stock': 'XYZ', 'top_bid': {'price': 110.0}, 'top_ask': {'price': 112.0}}
+        ]
+        
+        for quote in quotes:
+            dataPoint = getDataPoint(quote)
+            expected_data = (quote['stock'], quote['top_bid']['price'], quote['top_ask']['price'], (quote['top_bid']['price'] + quote['top_ask']['price']) / 2)
+            self.assertEqual(dataPoint, expected_data)
+    
+    def test_getRatio(self):
+        price_a = 120.0
+        price_b = 60.0
+        ratio = getRatio(price_a, price_b)
+        self.assertEqual(ratio, price_a / price_b)
+
+        price_a = 100.0
+        price_b = 0.0
+        ratio = getRatio(price_a, price_b)
+        self.assertEqual(ratio, None)
+
+if __name__ == '__main__':
+    unittest.main()
